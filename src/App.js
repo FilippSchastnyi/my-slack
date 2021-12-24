@@ -2,19 +2,27 @@ import React from 'react';
 import './App.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Header from "./components/Header/Header";
+import styled from "styled-components";
 
 
 function App() {
   return (
     <Router>
       <>
-        <Routes>
-          <Route path="/"
-                 element={<Header/>}/>
-        </Routes>
+        <Header/>
+        <AppBody>
+          <Sidebar/>
+          <Routes>
+            <Route path="/" exact/> TODO {/*Chat*/}
+          </Routes>
+        </AppBody>
       </>
     </Router>
   );
 }
 
 export default App;
+
+const AppBody = styled.div`
+
+`;

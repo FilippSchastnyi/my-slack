@@ -1,6 +1,17 @@
 import React from 'react';
 import styled from "styled-components";
-import {Create, FiberManualRecord} from "@mui/icons-material";
+import {
+  Add,
+  Apps,
+  BookmarkBorder,
+  Create, ExpandLess, ExpandMore,
+  FiberManualRecord,
+  FileCopy,
+  Inbox,
+  InsertComment,
+  PeopleAlt
+} from "@mui/icons-material";
+import SidebarOption from "./SidebarOption/Sidebar.option";
 
 const Sidebar = () => {
   return (
@@ -17,6 +28,18 @@ const Sidebar = () => {
           <Create/>
         </SidebarHeaderRight>
       </SidebarHeader>
+
+      <SidebarOption Icon={InsertComment} title="Threads"/>
+      <SidebarOption Icon={Inbox} title="Mentions & reactions"/>
+      <SidebarOption Icon={BookmarkBorder} title="Channel browser"/>
+      <SidebarOption Icon={PeopleAlt} title="People and user groups"/>
+      <SidebarOption Icon={Apps} title="Apps"/>
+      <SidebarOption Icon={FileCopy} title="file browser"/>
+      <SidebarOption Icon={ExpandLess} title="Show less"/>
+      <hr/>
+      <SidebarOption Icon={ExpandMore} title="Channels"/>
+      <hr/>
+      <SidebarOption Icon={Add} addChannelOption title="Add channels"/>
     </SidebarContainer>
   );
 };
@@ -29,6 +52,11 @@ const SidebarContainer = styled.div`
   background-color: var(--slack-color);
   border-top: 1px solid #49274b;
   padding-top: 60px;
+
+  > hr {
+    margin: 10px 0;
+    border: 1px solid #49274b;
+  }
 `;
 
 const SidebarHeader = styled.div`

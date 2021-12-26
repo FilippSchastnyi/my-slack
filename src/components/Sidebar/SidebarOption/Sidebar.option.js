@@ -1,20 +1,28 @@
 import React from 'react';
 import styled from "styled-components";
-import { db } from '../../../firebase';
+import {db} from '../../../firebase';
 import {addDoc, collection} from 'firebase/firestore'
+import {useDispatch} from "react-redux";
+import {enterRoom} from "../../../features/appSlice";
 
-const SidebarOption = ({Icon, title, addChannelOption}) => {
+const SidebarOption = ({Icon, title, addChannelOption, id}) => {
+  const usersCollectionRef = collection(db, 'rooms')
+  const dispatch = useDispatch();
 
-  const  addChannel = async () => {
-    const  channelName = prompt("Please enter channel name");
-    const usersCollectionRef = collection(db, 'rooms')
-    if (channelName) {
-      await addDoc(usersCollectionRef, {name: channelName})
-    }
+  const addChannel = async () => {
+    const channelName = prompt("Please enter the channel name");
+
+    !channelName.trim() // trim() method removes whitespace from both ends of a string and returns a new string
+      ? alert('Wrong value')
+      : await addDoc(usersCollectionRef, {name: channelName})
   }
 
   const selectChannel = () => {
-
+    if (id){
+      dispatch(enterRoom({
+        roomId: id
+      }))
+    }
   }
 
   return (
@@ -54,10 +62,12 @@ const SidebarOptionContainer = styled.div`
   }
 
   > h3 > span {
-    padding: 15px;
+    padding: 0 15px;
   }
 `;
 
-const SidebarOptionChannel = styled.div`
+const SidebarOptionChannel = styled.h3`
+  margin-top: 10px;
+  font-weight: 300;
 
 `;

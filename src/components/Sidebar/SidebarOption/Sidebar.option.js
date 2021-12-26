@@ -67,7 +67,7 @@ const SidebarOptionContainer = styled.div`
 `;
 
 const SidebarOptionChannel = styled.h3`
-  margin-top: 10px;
+  padding: 10px 0;
   font-weight: 300;
 
 `;

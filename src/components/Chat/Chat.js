@@ -1,60 +1,69 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import styled from "styled-components";
-import {InfoOutlined, Message, StarBorderOutlined} from "@mui/icons-material";
+import {InfoOutlined, StarBorderOutlined} from "@mui/icons-material";
 import {useSelector} from "react-redux";
 import {selectRoomId} from "../../features/appSlice";
 import ChatInput from "./ChatInput/ChatInput";
 import {useCollection, useDocument} from "react-firebase-hooks/firestore";
 import {db} from "../../firebase";
 import {collection, doc} from "firebase/firestore";
+import Message from "./ChatMessage/Message";
 
 
 const Chat = () => {
+  const chatRef = useRef(null)
   const roomId = useSelector(selectRoomId)
   const [roomDetails] = useDocument(
     roomId && doc(db, 'rooms', roomId)
   )
-  const [roomMessages] = useCollection(
+  const [roomMessages, loading] = useCollection(
     roomId && collection(doc(db, 'rooms', roomId), 'messages')
   )
 
-  console.log(roomMessages?.docs)
+  useEffect(() => {
+    chatRef?.current?.scrollIntoView({behavior: 'smooth'})
+  }, [roomId, loading])
 
 
   return (
     <ChatContainer>
-      <>
-        <Header>
-          <HeaderLeft>
-            <h4><strong>#{roomDetails?.data().name}</strong></h4>
-            <StarBorderOutlined/>
-          </HeaderLeft>
-          <HeaderRight>
-            <p>
-              <InfoOutlined/> Details
-            </p>
-          </HeaderRight>
-        </Header>
+      {roomDetails && roomMessages && (
+        <>
+          <Header>
+            <HeaderLeft>
+              <h4><strong>#{roomDetails?.data().name}</strong></h4>
+              <StarBorderOutlined/>
+            </HeaderLeft>
+            <HeaderRight>
+              <p>
+                <InfoOutlined/> Details
+              </p>
+            </HeaderRight>
+          </Header>
 
-        <ChatMessages>
-          {roomMessages?.docs.map(doc => {
-            const {message, user, userImage} = doc.data()
-            return (
-              <Message
-                key={doc.id}
-                message={message}
-                user={user}
-                userImage={userImage}
-              />
-            )
-          })}
-        </ChatMessages>
+          <ChatMessages>
+            {roomMessages?.docs.map(doc => {
+              const {message, user, userImage} = doc.data()
+              return (
+                <Message
+                  key={doc.id}
+                  message={message}
+                  user={user}
+                  userImage={userImage}
+                />
+              )
+            })}
+            <ChatBottom ref={chatRef}/>
+          </ChatMessages>
 
-        <ChatInput
-          channelName={roomDetails?.data().name}
-          channelId={roomId}
-        />
-      </>
+          <ChatInput
+            chatRef={chatRef}
+            channelName={roomDetails?.data().name}
+            channelId={roomId}
+          />
+        </>
+      )}
+
     </ChatContainer>
   );
 };
@@ -104,4 +113,8 @@ const HeaderRight = styled.div`
 
 const ChatMessages = styled.div`
 
+`;
+
+const ChatBottom = styled.div`
+  padding-bottom: 200px;
 `;

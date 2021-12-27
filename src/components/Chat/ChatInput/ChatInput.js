@@ -4,7 +4,7 @@ import {Button} from "@mui/material";
 import {db} from "../../../firebase";
 import {addDoc, collection, doc} from "firebase/firestore";
 
-const ChatInput = ({channelName, channelId}) => {
+const ChatInput = ({channelName, channelId, chatRef}) => {
   const [input, setInput] = useState('')
 
 
@@ -19,6 +19,12 @@ const ChatInput = ({channelName, channelId}) => {
       user: 'Pilip Shchasny',
       userImage: 'https://cs6.pikabu.ru/avatars/1576/v1576985-1962120878.jpg'
     })
+
+    chatRef.current.scrollIntoView({
+      behavior: 'smooth'
+    })
+
+    setInput('')
   }
   return (
     <ChatInputContainer>

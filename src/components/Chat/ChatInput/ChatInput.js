@@ -2,17 +2,19 @@ import React, {useRef, useState} from 'react';
 import styled from "styled-components";
 import {Button} from "@mui/material";
 import {db} from "../../../firebase";
-import {addDoc, collection} from "firebase/firestore";
+import {addDoc, collection, doc} from "firebase/firestore";
 
 const ChatInput = ({channelName, channelId}) => {
   const [input, setInput] = useState('')
-  const usersCollectionRef = collection(db, 'rooms')
+
 
   const sendMessage = async (e) => {
     e.preventDefault() // so, we dont need refresh the page after submit
-    console.log(channelId)
     if (!channelId) return false
-    await addDoc(collection(usersCollectionRef.doc(channelId),'messages'), {message: input})
+    const roomsDoc = doc(db, 'rooms', channelId)
+    const messagesCollectionRef = collection(roomsDoc, 'messages')
+
+    await addDoc(messagesCollectionRef, {message: input})
   }
   return (
     <ChatInputContainer>

@@ -11,7 +11,6 @@ const Chat = () => {
     <ChatContainer>
       <>
         <Header>
-
           <HeaderLeft>
             <h4><strong>#Room name</strong></h4>
             <StarBorderOutlined/>

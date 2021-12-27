@@ -14,14 +14,18 @@ const ChatInput = ({channelName, channelId}) => {
     const roomsDoc = doc(db, 'rooms', channelId)
     const messagesCollectionRef = collection(roomsDoc, 'messages')
 
-    await addDoc(messagesCollectionRef, {message: input})
+    await addDoc(messagesCollectionRef, {
+      message: input,
+      user: 'Pilip Shchasny',
+      userImage: 'https://cs6.pikabu.ru/avatars/1576/v1576985-1962120878.jpg'
+    })
   }
   return (
     <ChatInputContainer>
       <form>
         <input value={input} onChange={(e) => {
           setInput(e.target.value)
-        }} placeholder={`Message #ROOM`}/>
+        }} placeholder={`Message #${channelName}`}/>
         <Button hidden type='submit' onClick={sendMessage}>
           SEND
         </Button>
